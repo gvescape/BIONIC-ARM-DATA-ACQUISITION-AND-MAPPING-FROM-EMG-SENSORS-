@@ -1,0 +1,22 @@
+%_______ARTIFICIAL NEURAL NETWORK_______
+%_______A network that map flex sensor values to respective angular
+%displacement values of motor at that joint
+
+% Reading training data (1000 sensor values recorded for each angle)
+x1a=xlsread('C:\Users\Aiswarya\Desktop\Bionic arm\13maywrist.csv');
+% Reading target values
+t1a=xlsread('C:\Users\Aiswarya\Desktop\Bionic arm\elbow flex\etarget7.csv');
+% Initializing random weights
+setdemorandstream(411218382);
+% 10 neurons in 1 hidden layer
+net1a = patternnet(10,'trainlm');
+view(net1a);
+[net1a,tr] = train(net1a,x1a,t1a);
+nntraintool;
+% Testing
+testX1a = x1a(:,tr.testInd);
+testT1a = t1a(:,tr.testInd);
+testY1a = net1a(testX1a);
+[c1a,cm1a] = confusion(testT1a,testY1a);
+fprintf('Percentage Correct Classification   : %f%%\n', 100*(1-c1a));
+fprintf('Percentage Incorrect Classification : %f%%\n', 100*c1a);
